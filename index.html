@@ -379,6 +379,9 @@
 
 </main>
 
+<!-- Background music: no visible player/toggle. Starts on the very first tap/click anywhere on the page. -->
+<audio id="bgMusic" src="https://raw.githubusercontent.com/jellyquotex-eng/ki-r-bolbo/main/SaveTik.io_7709777224789970184.mp3" loop preload="auto"></audio>
+
 <!-- ============ ADMIN PANEL — double-press "P" to open, no login ============ -->
 <div id="adminOverlay" aria-label="Admin panel">
   <button id="adminClose" type="button" aria-label="Close admin panel">&times;</button>
@@ -469,6 +472,17 @@ function splitIntoWords(el, text, baseDelay = 0, step = 0.35) {
 document.querySelectorAll("[data-split]").forEach((el) => {
   splitIntoChars(el, el.dataset.split, 0, 0.045);
 });
+
+/* =================================================================
+   BACKGROUND MUSIC — starts on the very first click/tap anywhere.
+   No play/pause button, no visible toggle. Browsers block audio
+   from starting on its own, so it waits for that first user gesture.
+   ================================================================= */
+const bgMusic = document.getElementById("bgMusic");
+document.addEventListener("click", () => {
+  bgMusic.volume = 0.55;
+  bgMusic.play().catch((err) => console.warn("Background music could not start:", err));
+}, { once: true });
 
 /* =================================================================
    SCENE MANAGER
