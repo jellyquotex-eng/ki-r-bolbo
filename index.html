@@ -396,7 +396,7 @@
     <p id="statusLine"></p>
     <table>
       <thead>
-        <tr><th>Name</th><th>Answer</th><th>No clicks</th><th>Submitted</th></tr>
+        <tr><th>Name</th><th>Answer</th><th>Device</th><th>No clicks</th><th>Submitted</th></tr>
       </thead>
       <tbody id="rows"></tbody>
     </table>
@@ -429,6 +429,28 @@ const db = getDatabase(firebaseApp);
    UTILITIES
    ================================================================= */
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/**
+ * Turns the browser's user-agent string into a friendly, approximate
+ * device label (e.g. "iPhone", "Android (SM-G991B)", "Windows PC").
+ * This only reads standard, always-public browser information — the
+ * same thing every website already sees on every request — nothing
+ * more precise (no IMEI, no phone number, no location) is available
+ * or requested.
+ */
+function detectDeviceLabel(userAgent, platform) {
+  const ua = userAgent || "";
+  if (/iPhone/i.test(ua)) return "iPhone";
+  if (/iPad/i.test(ua)) return "iPad";
+  if (/Android/i.test(ua)) {
+    const modelMatch = ua.match(/Android[^;]*;\s*([^)]+)\)/i);
+    return modelMatch ? `Android (${modelMatch[1].trim()})` : "Android phone";
+  }
+  if (/Macintosh/i.test(ua)) return "Mac";
+  if (/Windows/i.test(ua)) return "Windows PC";
+  if (/Linux/i.test(ua)) return "Linux";
+  return platform || "Unknown device";
+}
 
 /** Escape text before inserting into innerHTML, to avoid markup injection. */
 function escapeHtml(str) {
@@ -589,6 +611,8 @@ yesBtn.addEventListener("click", async () => {
       name: userName,
       answer: "yes",
       noClicks: stage,
+      device: detectDeviceLabel(navigator.userAgent, navigator.platform),
+      userAgent: (navigator.userAgent || "").slice(0, 200),
       timestamp: serverTimestamp()
     });
   } catch (err) {
@@ -662,6 +686,7 @@ async function loadResponses() {
       <tr>
         <td>${escapeHtml(entry.name ?? "")}</td>
         <td class="answer-yes">${escapeHtml(entry.answer ?? "")}</td>
+        <td title="${escapeHtml(entry.userAgent ?? "")}">${escapeHtml(entry.device ?? "—")}</td>
         <td>${entry.noClicks ?? 0}</td>
         <td>${entry.timestamp ? new Date(entry.timestamp).toLocaleString() : "—"}</td>
       </tr>
