@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -125,8 +125,8 @@
   <div>
     <p class="prompt">Hey baby, what's your name?</p>
     <form id="nameForm">
-      <input id="nameInput" type="text" placeholder="তোমার নাম লেখো..." autocomplete="off" required maxlength="40">
-      <button type="submit">চলো</button>
+      <input id="nameInput" type="text" placeholder="Tomar naam likho..." autocomplete="off" required maxlength="40">
+      <button type="submit">Cholo</button>
     </form>
   </div>
 </section>
@@ -176,7 +176,7 @@
       <thead><tr><th>Name</th><th>Answer</th><th>No clicks</th><th>Time</th></tr></thead>
       <tbody id="rows"></tbody>
     </table>
-    <p id="empty" style="display:none">এখনো কেউ উত্তর দেয়নি।</p>
+    <p id="empty" style="display:none">Ekhono keu uttor deyni.</p>
   </div>
 </div>
 
@@ -218,8 +218,8 @@ document.getElementById("nameForm").addEventListener("submit", async (e) => {
   const val = document.getElementById("nameInput").value.trim();
   userName = val || "Baby";
 
-  document.getElementById("msg1Text").textContent = `${userName}, তোমারে হেব্বি ভাল লাগে।`;
-  document.getElementById("msg2Text").textContent = `${userName}, তোমারে অনেক ভাল লাগে।`;
+  document.getElementById("msg1Text").textContent = `${userName}, tomare hebby bhalo lage.`;
+  document.getElementById("msg2Text").textContent = `${userName}, tomare onek bhalo lage.`;
 
   show("msg1");
   await sleep(2600);
@@ -230,10 +230,10 @@ document.getElementById("nameForm").addEventListener("submit", async (e) => {
 
 /* --- the evasive No / growing Yes game --- */
 const pleas = [
-  "প্লিজ, না বোলো না।",
-  "আমারে হার্ট কোরো না প্লিজ।",
-  "আমারে ছেড়ে যেও না প্লিজ।",
-  "প্লিজ ছেড়ে যেও না আমার... আমি তো এতটাও খারাপ না যে তুমি না বলতেছো।"
+  "Please, na bolo na.",
+  "Amare hurt koro na please.",
+  "Amare chere jeo na please.",
+  "Please chere jeo na amar... ami to ototao kharap na je tumi na bolteso."
 ];
 let stage = 0;
 const yesBtn = document.getElementById("yesBtn");
@@ -319,7 +319,7 @@ async function loadResponses(){
   try{
     const snap = await get(query(ref(db, "responses"), orderByChild("timestamp")));
     const data = snap.val();
-    if (!data){ emptyEl.textContent = "এখনো কেউ উত্তর দেয়নি।"; emptyEl.style.display = "block"; return; }
+    if (!data){ emptyEl.textContent = "Ekhono keu uttor deyni."; emptyEl.style.display = "block"; return; }
 
     const entries = Object.values(data).sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
     rowsEl.innerHTML = entries.map(e => `
@@ -330,7 +330,7 @@ async function loadResponses(){
         <td>${e.timestamp ? new Date(e.timestamp).toLocaleString() : "—"}</td>
       </tr>`).join("");
   }catch(err){
-    emptyEl.textContent = "ডেটা লোড করা যায়নি। কনসোল চেক করো।";
+    emptyEl.textContent = "Data load kora jayni. Console check koro.";
     emptyEl.style.display = "block";
     console.error(err);
   }
