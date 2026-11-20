@@ -5,246 +5,157 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FFF6F3">
 <title>Pookie Wife?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
-  /* ===========================================================
-     DESIGN TOKENS
-     =========================================================== */
   :root{
-    --cream:      #FFF6F3;
-    --pink:       #F2CAD3;
-    --pink-deep:  #E58CA0;
-    --rose:       #C9718A;
-    --olive:      #6B7A4F;
-    --olive-soft: #A9B48A;
-    --blue:       #BCD9EC;
-    --gold:       #E3B873;
-    --ease:       cubic-bezier(.22,.61,.12,1);
-    --ease-soft:  cubic-bezier(.16,.84,.24,1);
+    --cream:#FFF6F3; --pink:#F2CAD3; --pink-deep:#E58CA0; --rose:#C9718A;
+    --olive:#6B7A4F; --olive-soft:#A9B48A; --blue:#BCD9EC; --gold:#E3B873;
+    --ease:cubic-bezier(.22,.61,.12,1); --ease-soft:cubic-bezier(.16,.84,.24,1);
+    --hand:"Patrick Hand","Bradley Hand","Segoe Print","Comic Sans MS","Chalkboard SE",cursive;
   }
-
   *{ box-sizing:border-box; margin:0; padding:0; }
-  html,body{
-    height:100%; width:100%; overflow:hidden; background:var(--cream);
-    overscroll-behavior:none;
-  }
+  html,body{ height:100%; width:100%; overflow:hidden; background:var(--cream); overscroll-behavior:none; }
   body{
     font-family:"SF Pro Display","SF Pro Text",Inter,"Helvetica Neue",Arial,system-ui,sans-serif;
-    color:var(--rose);
-    display:grid; place-items:center; text-align:center;
-    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
-    user-select:none; -webkit-user-select:none; cursor:default;
+    color:var(--rose); display:grid; place-items:center; text-align:center;
+    -webkit-font-smoothing:antialiased; user-select:none; -webkit-user-select:none;
   }
 
-  /* ===========================================================
-     AMBIENT BACKGROUND — slow-moving colour glows + grain
-     =========================================================== */
+  /* ---------- ambient background ---------- */
   .atmos{ position:fixed; inset:0; z-index:0; overflow:hidden; }
-  .blob{
-    position:absolute; width:70vmax; height:70vmax; border-radius:50%;
-    filter:blur(90px); opacity:.5; will-change:transform, opacity;
-    transition:transform 7s var(--ease-soft), opacity 5s ease;
-  }
-  .b1{ background:radial-gradient(circle,var(--pink),transparent 68%);      left:-25vmax; top:-22vmax;  animation:drift1 34s ease-in-out infinite alternate; }
-  .b2{ background:radial-gradient(circle,var(--blue),transparent 68%);      right:-28vmax; bottom:-22vmax; animation:drift2 40s ease-in-out infinite alternate; }
-  .b3{ background:radial-gradient(circle,var(--olive-soft),transparent 68%); left:30vw; top:40vh;          animation:drift3 46s ease-in-out infinite alternate; opacity:.3; }
-
+  .blob{ position:absolute; width:70vmax; height:70vmax; border-radius:50%; filter:blur(90px); opacity:.5;
+         transition:transform 7s var(--ease-soft), opacity 5s ease; }
+  .b1{ background:radial-gradient(circle,var(--pink),transparent 68%); left:-25vmax; top:-22vmax; animation:drift1 34s ease-in-out infinite alternate; }
+  .b2{ background:radial-gradient(circle,var(--blue),transparent 68%); right:-28vmax; bottom:-22vmax; animation:drift2 40s ease-in-out infinite alternate; }
+  .b3{ background:radial-gradient(circle,var(--olive-soft),transparent 68%); left:30vw; top:40vh; animation:drift3 46s ease-in-out infinite alternate; opacity:.3; }
   @keyframes drift1{ to{ transform:translate(10vmax,8vmax) scale(1.08); } }
   @keyframes drift2{ to{ transform:translate(-8vmax,-10vmax) scale(1.1); } }
   @keyframes drift3{ to{ transform:translate(-6vmax,6vmax) scale(1.05); } }
-
-  body[data-scene="msg1"] .b1{ transform:translate(6vmax,4vmax); }
-  body[data-scene="msg2"] .b2{ transform:translate(-6vmax,-4vmax); }
+  body[data-scene="chat"] .b1{ transform:translate(6vmax,4vmax); }
+  body[data-scene="chat"] .b2{ transform:translate(-6vmax,-4vmax); }
   body[data-scene="proposal"] .b1{ transform:translate(8vmax,-6vmax); opacity:.65; }
   body[data-scene="proposal"] .b2{ transform:translate(-8vmax,6vmax); opacity:.6; }
   body[data-scene="final"] .b1{ transform:translate(10vmax,8vmax); opacity:.75; }
   body[data-scene="final"] .b3{ opacity:.5; transform:translate(-4vmax,-6vmax) scale(1.15); }
-
-  .grain{
-    position:fixed; inset:-50%; z-index:1; pointer-events:none; opacity:.05; mix-blend-mode:multiply;
+  .grain{ position:fixed; inset:-50%; z-index:1; pointer-events:none; opacity:.05; mix-blend-mode:multiply;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    animation:grain 12s steps(6) infinite;
-  }
-  @keyframes grain{
-    0%{ transform:translate(0,0); } 20%{ transform:translate(-3%,2%); }
-    40%{ transform:translate(2%,-3%); } 60%{ transform:translate(-2%,-1%); }
-    80%{ transform:translate(3%,3%); } 100%{ transform:translate(0,0); }
-  }
+    animation:grain 12s steps(6) infinite; }
+  @keyframes grain{ 0%{transform:translate(0,0)} 20%{transform:translate(-3%,2%)} 40%{transform:translate(2%,-3%)} 60%{transform:translate(-2%,-1%)} 80%{transform:translate(3%,3%)} 100%{transform:translate(0,0)} }
 
-  /* ===========================================================
-     SCENE TRANSITIONS
-     =========================================================== */
-  .scene{
-    position:fixed; inset:0; z-index:2; display:grid; place-items:center; padding:6vw;
+  /* ---------- scenes ---------- */
+  .scene{ position:fixed; inset:0; z-index:2; display:grid; place-items:center; padding:5vw;
     opacity:0; visibility:hidden; filter:blur(16px); transform:scale(1.05) translateY(1.5vh);
-    transition:opacity 1.4s var(--ease), filter 1.4s var(--ease),
-               transform 1.8s var(--ease), visibility 0s 1.4s;
-  }
-  .scene.active{
-    opacity:1; visibility:visible; filter:blur(0); transform:none;
-    transition:opacity 1.1s var(--ease), filter 1.1s var(--ease),
-               transform 1.6s var(--ease), visibility 0s;
-  }
-
-  /* character-level reveal engine: blur-to-sharp + scale + rise */
-  .ch{
-    display:inline-block; opacity:0; filter:blur(18px);
-    transform:translateY(.14em) scale(1.25);
-    transition:
-      opacity 1.6s var(--ease) var(--d,0s),
-      filter 1.9s var(--ease) var(--d,0s),
-      transform 2.1s var(--ease-soft) var(--d,0s);
-    will-change:opacity, filter, transform;
-  }
+    transition:opacity 1.4s var(--ease), filter 1.4s var(--ease), transform 1.8s var(--ease), visibility 0s 1.4s; }
+  .scene.active{ opacity:1; visibility:visible; filter:blur(0); transform:none;
+    transition:opacity 1.1s var(--ease), filter 1.1s var(--ease), transform 1.6s var(--ease), visibility 0s; }
+  .ch{ display:inline-block; opacity:0; filter:blur(18px); transform:translateY(.14em) scale(1.25);
+    transition:opacity 1.6s var(--ease) var(--d,0s), filter 1.9s var(--ease) var(--d,0s), transform 2.1s var(--ease-soft) var(--d,0s); }
   .show .ch{ opacity:1; filter:blur(0); transform:none; }
 
-  /* ===========================================================
-     SCENE: NAME ENTRY
-     =========================================================== */
-  #scr-name .prompt{
-    font-size:clamp(1.5rem,5.2vw,2.9rem); margin-bottom:2.2rem; font-weight:300; letter-spacing:.01em;
-  }
-  #scr-name form{ display:flex; flex-direction:column; align-items:center; gap:1.3rem; width:min(90vw,420px); }
-  #scr-name input{
-    width:100%; font-size:1.2rem; padding:1rem 1.2rem; border-radius:999px; border:2px solid var(--pink);
-    background:#fff; color:var(--rose); outline:none; text-align:center; font-family:inherit;
-    transition:border-color .3s ease, box-shadow .3s ease;
-  }
+  /* ---------- name ---------- */
+  #scr-name .prompt{ font-size:clamp(1.5rem,5.2vw,2.9rem); margin-bottom:2.2rem; font-weight:300; }
+  #scr-name form{ display:flex; flex-direction:column; align-items:center; gap:1.3rem; width:min(90vw,420px); margin:0 auto; }
+  #scr-name input{ width:100%; font-size:1.2rem; padding:1rem 1.2rem; border-radius:999px; border:2px solid var(--pink);
+    background:#fff; color:var(--rose); outline:none; text-align:center; font-family:inherit; user-select:text; -webkit-user-select:text;
+    transition:border-color .3s, box-shadow .3s; }
   #scr-name input:focus{ border-color:var(--pink-deep); box-shadow:0 0 0 6px rgba(229,140,160,.12); }
-  #scr-name button{
-    padding:.9rem 2.4rem; border-radius:999px; border:none; background:var(--pink-deep); color:#fff;
-    font-size:1.05rem; font-family:inherit; cursor:pointer; letter-spacing:.02em;
-    transition:transform .25s ease, background .25s ease, box-shadow .25s ease;
-  }
+  #scr-name button{ padding:.9rem 2.4rem; border-radius:999px; border:none; background:var(--pink-deep); color:#fff;
+    font-size:1.05rem; font-family:inherit; cursor:pointer; transition:transform .25s, background .25s, box-shadow .25s; }
   #scr-name button:hover{ background:var(--rose); box-shadow:0 8px 24px rgba(201,113,138,.3); transform:translateY(-2px); }
   #scr-name button:active{ transform:scale(.96); }
 
-  /* ===========================================================
-     SCENE: MESSAGES
-     =========================================================== */
-  .msg{ font-size:clamp(1.4rem,5vw,2.9rem); font-weight:300; line-height:1.5; max-width:20ch; letter-spacing:.01em; }
+  /* ---------- chatbot-style messages ---------- */
+  .chat{ width:min(88vw,640px); }
+  .who{ display:inline-flex; align-items:center; gap:.45rem; font-size:.82rem; color:var(--olive); opacity:.85;
+    margin-bottom:1.1rem; padding:.3rem .8rem; border-radius:999px; background:rgba(255,255,255,.7); border:1px solid var(--pink); }
+  .who b{ width:8px; height:8px; border-radius:50%; background:var(--olive-soft); animation:pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse{ 50%{ transform:scale(1.5); opacity:.5; } }
+  .slot{ min-height:7.5em; display:grid; place-items:center; }
+  .msg{ font-size:clamp(1.3rem,4.6vw,2.4rem); font-weight:300; line-height:1.5; letter-spacing:.01em; transition:opacity .5s ease; }
+  .msg.out{ opacity:0; }
+  .cur{ display:inline-block; width:.5em; height:1em; margin-left:5px; vertical-align:-.12em; border-radius:2px;
+    background:var(--pink-deep); animation:blink 1s steps(2) infinite; }
+  @keyframes blink{ 50%{ opacity:0; } }
+  .dots{ display:none; gap:.5rem; }
+  .dots i{ width:11px; height:11px; border-radius:50%; background:var(--pink-deep); animation:bounce 1s ease-in-out infinite; }
+  .dots i:nth-child(2){ animation-delay:.15s; } .dots i:nth-child(3){ animation-delay:.3s; }
+  @keyframes bounce{ 0%,60%,100%{ transform:translateY(0); opacity:.4; } 30%{ transform:translateY(-9px); opacity:1; } }
+  .chat.think .msg{ display:none; } .chat.think .dots{ display:flex; }
 
-  /* ===========================================================
-     SCENE: PROPOSAL
-     =========================================================== */
-  #scr-proposal .question{
-    font-size:clamp(1.7rem,6.4vw,3.4rem); font-weight:300; margin-bottom:1.2rem;
-    letter-spacing:.45em; margin-right:-.45em;
-    transition:letter-spacing 2.4s var(--ease-soft), margin-right 2.4s var(--ease-soft),
-               text-shadow 2.4s ease .6s;
-    text-shadow:0 0 0 rgba(188,217,236,0);
-  }
-  .show #scr-proposal .question{
-    letter-spacing:.04em; margin-right:-.04em;
-    text-shadow:0 0 36px rgba(188,217,236,.55), 0 0 70px rgba(242,202,211,.35);
-  }
-  #scr-proposal .plea{
-    min-height:2.6em; font-size:clamp(1rem,3.6vw,1.45rem); color:var(--rose); opacity:.88;
-    margin-bottom:2.6rem; transition:opacity .45s ease, transform .45s var(--ease);
-  }
+  /* ---------- proposal ---------- */
+  #scr-proposal .question{ font-size:clamp(1.7rem,6.4vw,3.4rem); font-weight:300; margin-bottom:1.2rem;
+    letter-spacing:.45em; margin-right:-.45em; text-shadow:0 0 0 rgba(188,217,236,0);
+    transition:letter-spacing 2.4s var(--ease-soft), margin-right 2.4s var(--ease-soft), text-shadow 2.4s ease .6s; }
+  .show #scr-proposal .question{ letter-spacing:.04em; margin-right:-.04em;
+    text-shadow:0 0 36px rgba(188,217,236,.55), 0 0 70px rgba(242,202,211,.35); }
+  #scr-proposal .plea{ min-height:3.4em; font-size:clamp(1rem,3.6vw,1.45rem); color:var(--rose); opacity:.9; margin-bottom:2.2rem; }
   .toggle-row{ display:flex; gap:1.7rem; align-items:center; justify-content:center; flex-wrap:wrap; }
-  .toggle-row button{
-    border:none; border-radius:999px; font-family:inherit; cursor:pointer; color:#fff;
-    transition:transform .5s var(--ease), font-size .5s var(--ease), padding .5s var(--ease),
-               background .5s var(--ease), opacity .5s var(--ease), box-shadow .5s var(--ease);
-  }
+  .toggle-row button{ border:none; border-radius:999px; font-family:inherit; cursor:pointer; color:#fff;
+    transition:transform .5s var(--ease), background .5s var(--ease), opacity .5s var(--ease), box-shadow .5s var(--ease); }
   #yesBtn{ background:var(--pink-deep); font-size:1.35rem; padding:1.05rem 2.5rem; box-shadow:0 10px 30px rgba(229,140,160,.25); }
   #yesBtn:hover{ transform:translateY(-3px) scale(1.02); }
   #noBtn{ background:var(--olive); font-size:1.1rem; padding:.9rem 2rem; opacity:.92; }
   #noBtn:disabled{ pointer-events:none; }
 
-  /* ===========================================================
-     SCENE: FINAL — line-drawn tree/flowers + premium heart reveal
-     =========================================================== */
-  #scr-final{ overflow:hidden; }
-  #scr-final .final-inner{ position:relative; display:flex; flex-direction:column; align-items:center; }
-  #scr-final svg{ width:min(92vw,560px); height:auto; margin-bottom:1.2rem; position:relative; z-index:1; }
+  /* ---------- FINAL: kid's crayon drawing on notebook paper ---------- */
+  #scr-final{ overflow:hidden; font-family:var(--hand); }
+  .conf{ position:fixed; top:-6vh; z-index:3; pointer-events:none; animation:fall linear infinite; }
+  @keyframes fall{ 0%{ transform:translate(0,0) rotate(0); } 50%{ transform:translate(var(--sw,20px),55vh) rotate(180deg); } 100%{ transform:translate(0,112vh) rotate(360deg); } }
 
-  /* soft glow sitting behind the whole composition — fades in with the scene */
-  .final-halo{
-    position:absolute; width:min(75vw,62vh); aspect-ratio:1; border-radius:50%; z-index:0;
-    background:radial-gradient(circle, rgba(242,202,211,.55), rgba(188,217,236,.22) 45%, transparent 72%);
-    opacity:0; transform:scale(.6); filter:blur(34px);
-    transition:opacity 2.4s var(--ease) .2s, transform 3s var(--ease-soft) .1s;
-  }
-  .show .final-halo{ opacity:1; transform:scale(1); }
+  .paper{ position:relative; z-index:2; width:min(92vw,480px); padding:1.3rem 1.1rem 1.6rem; border-radius:6px; background-color:#FFFDF8;
+    background-image:repeating-linear-gradient(transparent 0 29px, rgba(188,217,236,.55) 29px 30px);
+    box-shadow:0 34px 70px rgba(201,113,138,.28), 0 2px 6px rgba(0,0,0,.08);
+    opacity:0; transform:rotate(-4deg) scale(.82) translateY(40px);
+    transition:opacity 1.1s var(--ease), transform 1.5s var(--ease-soft); }
+  .show .paper{ opacity:1; transform:rotate(-1.5deg); }
+  .paper::before,.paper::after{ content:""; position:absolute; top:-13px; width:84px; height:26px; background:rgba(242,202,211,.85);
+    box-shadow:0 1px 3px rgba(0,0,0,.1); background-image:repeating-linear-gradient(90deg,transparent 0 6px,rgba(255,255,255,.35) 6px 12px); }
+  .paper::before{ left:-18px; transform:rotate(-34deg); }
+  .paper::after{ right:-18px; transform:rotate(34deg); background-color:rgba(188,217,236,.9); }
+  .paper svg{ width:100%; height:auto; display:block; overflow:visible; }
 
-  /* --- tree / flower line-art: animation only runs once the scene is shown --- */
-  .draw{ fill:none; stroke:var(--olive); stroke-width:2; stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:1; }
-  .show .draw{ animation:draw 3s var(--ease) var(--d,0s) forwards; }
+  .dr{ fill:none; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:1; }
+  .show .dr{ animation:draw var(--t,1.4s) var(--ease) var(--d,0s) forwards; }
   @keyframes draw{ to{ stroke-dashoffset:0; } }
+  .pop{ opacity:0; }
+  .show .pop{ animation:pop .9s cubic-bezier(.34,1.56,.64,1) var(--d,0s) forwards, wig 3.4s ease-in-out calc(var(--d,0s) + 1.2s) infinite; }
+  @keyframes pop{ 0%{ opacity:0; transform:scale(0) rotate(-25deg); } 60%{ opacity:1; transform:scale(1.22) rotate(6deg); } 100%{ opacity:1; transform:scale(1) rotate(0); } }
+  @keyframes wig{ 0%,100%{ transform:rotate(0); } 50%{ transform:rotate(4deg); } }
+  .fade{ opacity:0; }
+  .show .fade{ animation:fadein 1.4s ease var(--d,0s) forwards; }
+  @keyframes fadein{ to{ opacity:1; } }
+  .spk{ opacity:0; fill:#F6D16B; stroke:#E3A93C; stroke-width:1.6; stroke-linejoin:round; transform-box:fill-box; transform-origin:center; }
+  .show .spk{ animation:tw 2.2s ease-in-out var(--d,5.8s) infinite; }
+  @keyframes tw{ 0%,100%{ opacity:0; transform:scale(.3) rotate(0); } 50%{ opacity:1; transform:scale(1.1) rotate(14deg); } }
+  .beat{ transform-origin:200px 122px; }
+  .show .beat{ animation:beat 1.7s ease-in-out 6.4s infinite; }
+  @keyframes beat{ 0%,100%{ transform:scale(1); } 14%{ transform:scale(1.06); } 28%{ transform:scale(1); } 42%{ transform:scale(1.04); } }
+  .bob{ animation:none; }
+  .show .bob{ animation:pop .8s cubic-bezier(.34,1.56,.64,1) var(--d,0s) forwards, float 3s ease-in-out calc(var(--d,0s) + 1s) infinite; }
+  @keyframes float{ 50%{ transform:translateY(-6px) rotate(6deg); } }
 
-  .bloom{ opacity:0; transform:scale(.25); transform-origin:center; fill:var(--pink-deep); }
-  .show .bloom{ animation:bloom 1.2s var(--ease-soft) var(--d,0s) forwards; }
-  @keyframes bloom{ to{ opacity:1; transform:scale(1); } }
+  .accept{ margin-top:.4rem; min-height:7.2em; color:var(--rose); }
+  .accept p{ font-size:clamp(1.05rem,3.8vw,1.35rem); line-height:1.45; }
+  .accept p:first-child{ font-size:clamp(1.5rem,5.6vw,2rem); color:var(--pink-deep); }
+  .accept .small{ font-size:.95rem; color:var(--olive); }
+  .sign{ position:absolute; right:1rem; bottom:.35rem; font-size:.85rem; color:var(--olive); transform:rotate(-3deg); opacity:0; transition:opacity 1.6s ease; }
+  .sign.on{ opacity:.9; }
 
-  /* --- premium heart: hand-drawn outline → gold-kissed fill → shimmer sweep --- */
-  .heart-outline{
-    fill:none; stroke:var(--pink-deep); stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round;
-    stroke-dasharray:1; stroke-dashoffset:1;
-  }
-  .show .heart-outline{ animation:heartDraw 2.6s var(--ease) var(--d,1.6s) forwards; }
-  @keyframes heartDraw{ to{ stroke-dashoffset:0; } }
+  @media (prefers-reduced-motion:reduce){ .blob,.grain,.conf{ animation:none; } .ch{ transition-duration:.4s !important; } }
 
-  .heart-fill{
-    opacity:0; fill:url(#heartGradient);
-    filter:drop-shadow(0 0 0 rgba(229,140,160,0));
-  }
-  .show .heart-fill{ animation:heartFill 2s var(--ease) var(--d,4.1s) forwards; }
-  @keyframes heartFill{
-    to{ opacity:1; filter:drop-shadow(0 0 18px rgba(229,140,160,.55)) drop-shadow(0 0 34px rgba(227,184,115,.3)); }
-  }
-
-  .heart-shimmer{ transform:translateX(0); }
-  .show .heart-shimmer{ animation:heartShimmer 1.6s var(--ease) var(--d,4.6s) forwards; }
-  @keyframes heartShimmer{ to{ transform:translateX(520px); } }
-
-  .sparkle{ opacity:0; transform-origin:center; fill:var(--gold); }
-  .show .sparkle{ animation:sparkle 2.6s ease-in-out var(--d,5s) infinite; }
-  @keyframes sparkle{ 0%,100%{ opacity:0; transform:scale(.3) rotate(0deg); } 50%{ opacity:1; transform:scale(1) rotate(12deg); } }
-
-  svg circle.deco, svg ellipse.deco{ fill:var(--pink-deep); }
-
-  .accept{
-    font-size:clamp(1.3rem,4.6vw,2.2rem); font-weight:300; display:flex; gap:.4em;
-    flex-wrap:wrap; justify-content:center;
-  }
-  .accept .ch{ transition-delay:var(--d,0s); }
-
-  @media (prefers-reduced-motion:reduce){
-    .blob, .grain{ animation:none; }
-    .ch{ transition-duration:.4s !important; }
-  }
-
-  /* ===========================================================
-     ADMIN OVERLAY — no login, opened by double-pressing "P"
-     =========================================================== */
-  #adminOverlay{
-    position:fixed; inset:0; z-index:50; background:rgba(255,246,243,.98); display:none;
-    place-items:start center; padding:5vw 5vw 8vw; overflow-y:auto;
-    backdrop-filter:blur(6px);
-  }
+  /* ---------- admin overlay (double-press "P") ---------- */
+  #adminOverlay{ position:fixed; inset:0; z-index:50; background:rgba(255,246,243,.98); display:none; place-items:start center; padding:5vw 5vw 8vw; overflow-y:auto; user-select:text; }
   #adminOverlay.open{ display:grid; }
-  #adminClose{
-    position:fixed; top:1.3rem; right:1.5rem; background:#fff; border:1px solid var(--pink);
-    width:40px; height:40px; border-radius:50%; color:var(--rose); font-size:1.3rem; line-height:1;
-    cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.08);
-  }
+  #adminClose{ position:fixed; top:1.3rem; right:1.5rem; background:#fff; border:1px solid var(--pink); width:40px; height:40px; border-radius:50%; color:var(--rose); font-size:1.3rem; cursor:pointer; }
   #panel{ width:min(100%,760px); margin-top:3vh; text-align:left; }
-  #panel .panel-head{
-    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.8rem;
-    margin-bottom:1.3rem;
-  }
+  #panel .panel-head{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.8rem; margin-bottom:1.3rem; }
   #panel h1{ font-weight:500; color:var(--olive); font-size:1.5rem; }
   #panel .count{ font-size:.85rem; color:var(--rose); opacity:.75; }
-  #refreshBtn{
-    border:1px solid var(--pink-deep); background:#fff; color:var(--rose); border-radius:999px;
-    padding:.5rem 1.1rem; font-size:.85rem; cursor:pointer; font-family:inherit;
-    transition:background .2s ease, color .2s ease;
-  }
+  #refreshBtn{ border:1px solid var(--pink-deep); background:#fff; color:var(--rose); border-radius:999px; padding:.5rem 1.1rem; font-size:.85rem; cursor:pointer; font-family:inherit; }
   #refreshBtn:hover{ background:var(--pink-deep); color:#fff; }
-  #statusLine{
-    font-size:.9rem; margin-bottom:1rem; padding:.7rem 1rem; border-radius:10px; display:none;
-  }
+  #statusLine{ font-size:.9rem; margin-bottom:1rem; padding:.7rem 1rem; border-radius:10px; display:none; }
   #statusLine.info{ display:block; background:#fff; color:var(--rose); border:1px solid var(--pink); }
   #statusLine.error{ display:block; background:#FDECEC; color:#B3261E; border:1px solid #F3B7B2; }
   table{ width:100%; border-collapse:collapse; background:#fff; border-radius:14px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.05); }
@@ -253,23 +164,16 @@
   tbody tr:last-child td{ border-bottom:none; }
   tbody tr:nth-child(odd){ background:#FFFBFA; }
   .answer-yes{ color:var(--olive); font-weight:600; }
-
-  @media (max-width:520px){
-    table{ font-size:.82rem; }
-    thead th, tbody td{ padding:.55rem .6rem; }
-  }
+  @media (max-width:520px){ table{ font-size:.82rem; } thead th,tbody td{ padding:.55rem .6rem; } }
 </style>
 </head>
 <body data-scene="name">
 
-<div class="atmos" aria-hidden="true">
-  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
-</div>
+<div class="atmos" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 <div class="grain" aria-hidden="true"></div>
 
 <main>
-
-  <!-- ============ SCENE: NAME ============ -->
+  <!-- NAME -->
   <section id="scr-name" class="scene active" aria-label="Enter your name">
     <div>
       <p class="prompt">Hey baby, what's your name?</p>
@@ -280,17 +184,18 @@
     </div>
   </section>
 
-  <!-- ============ SCENE: MESSAGE 1 ============ -->
-  <section id="scr-msg1" class="scene" aria-label="Message">
-    <p class="msg" id="msg1Text" data-split-target></p>
+  <!-- CHATBOT-STYLE MESSAGES -->
+  <section id="scr-chat" class="scene" aria-label="Messages">
+    <div class="chat" id="chat">
+      <div class="who"><b></b>pookie bot</div>
+      <div class="slot">
+        <p class="msg" id="msg"><span id="msgText"></span><i class="cur"></i></p>
+        <div class="dots" aria-label="typing"><i></i><i></i><i></i></div>
+      </div>
+    </div>
   </section>
 
-  <!-- ============ SCENE: MESSAGE 2 ============ -->
-  <section id="scr-msg2" class="scene" aria-label="Message">
-    <p class="msg" id="msg2Text" data-split-target></p>
-  </section>
-
-  <!-- ============ SCENE: PROPOSAL ============ -->
+  <!-- PROPOSAL -->
   <section id="scr-proposal" class="scene" aria-label="The proposal">
     <div>
       <p class="question" data-split="Will you be my pookie wife?"></p>
@@ -302,115 +207,117 @@
     </div>
   </section>
 
-  <!-- ============ SCENE: FINAL ============ -->
+  <!-- FINAL -->
   <section id="scr-final" class="scene" aria-label="Celebration">
-    <div class="final-inner">
-      <div class="final-halo" aria-hidden="true"></div>
-
-      <svg viewBox="0 0 400 260" aria-hidden="true">
+    <div class="paper">
+      <svg viewBox="0 0 400 290" aria-hidden="true">
         <defs>
-          <linearGradient id="heartGradient" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%"   style="stop-color:var(--pink);"/>
-            <stop offset="55%"  style="stop-color:var(--pink-deep);"/>
-            <stop offset="100%" style="stop-color:var(--gold);"/>
-          </linearGradient>
-          <linearGradient id="shimmerGradient" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"   stop-color="#fff" stop-opacity="0"/>
-            <stop offset="50%"  stop-color="#fff" stop-opacity=".85"/>
-            <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
-          </linearGradient>
-          <clipPath id="heartClip">
-            <path d="M200 185
-                     C168 158 138 132 138 100
-                     C138 76 158 58 182 58
-                     C192 58 200 64 200 76
-                     C200 64 208 58 218 58
-                     C242 58 262 76 262 100
-                     C262 132 232 158 200 185 Z"/>
-          </clipPath>
+          <!-- crayon: wobbly edges + waxy grain -->
+          <filter id="crayon" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="2" seed="4" result="w"/>
+            <feDisplacementMap in="SourceGraphic" in2="w" scale="4.5" result="d"/>
+            <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="1" seed="2" result="g"/>
+            <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 1.85" result="m"/>
+            <feComposite in="d" in2="m" operator="in"/>
+          </filter>
+          <clipPath id="hc"><path d="M200 185C168 158 138 132 138 100C138 76 158 58 182 58C192 58 200 64 200 76C200 64 208 58 218 58C242 58 262 76 262 100C262 132 232 158 200 185Z"/></clipPath>
+          <g id="fl">
+            <g fill="currentColor" stroke="#fff" stroke-width="1">
+              <circle cx="9" cy="0" r="7"/><circle cx="2.8" cy="8.6" r="7"/><circle cx="-7.3" cy="5.3" r="7"/>
+              <circle cx="-7.3" cy="-5.3" r="7"/><circle cx="2.8" cy="-8.6" r="7"/>
+            </g>
+            <circle r="5" fill="#F6D16B" stroke="#E3A93C" stroke-width="1.5"/>
+          </g>
+          <path id="sm" d="M0 6C-10 -1 -7 -10 0 -5C7 -10 10 -1 0 6Z"/>
         </defs>
 
-        <!-- supporting line-art: slender branches with a few blossoms -->
-        <path class="draw" style="--d:.1s"  d="M90 240 C85 180 95 140 92 90 C90 60 100 40 100 20" />
-        <path class="draw" style="--d:.5s"  d="M100 70 C130 55 150 40 170 50" />
-        <path class="draw" style="--d:.9s"  d="M95 110 C65 95 45 80 30 95" />
-        <path class="draw" style="--d:.3s"  d="M300 240 C295 170 305 120 300 70 C298 45 308 25 305 10" />
-        <path class="draw" style="--d:1.3s" d="M105 150 C135 140 155 150 160 170" />
-        <path class="draw" style="--d:1.0s" d="M295 150 C270 140 250 150 245 170" />
-        <ellipse class="bloom deco" style="--d:1.8s" cx="100" cy="18"  rx="9" ry="6"/>
-        <ellipse class="bloom deco" style="--d:2.1s" cx="172" cy="48"  rx="8" ry="5"/>
-        <ellipse class="bloom deco" style="--d:2.3s" cx="28"  cy="94"  rx="7" ry="5"/>
-        <circle  class="bloom deco" style="--d:2.5s" cx="305" cy="8"   r="6"/>
-        <ellipse class="bloom deco" style="--d:2.7s" cx="163" cy="172" rx="7" ry="5"/>
-        <ellipse class="bloom deco" style="--d:2.9s" cx="242" cy="172" rx="7" ry="5"/>
+        <g filter="url(#crayon)">
+          <!-- sun with a smiley face -->
+          <g class="pop" style="--d:.5s;transform-origin:58px 50px">
+            <circle cx="58" cy="50" r="17" fill="#F9DE8B" stroke="#E3A93C" stroke-width="3"/>
+            <circle cx="52" cy="47" r="1.9" fill="#8a5a1c"/><circle cx="64" cy="47" r="1.9" fill="#8a5a1c"/>
+            <path d="M51 54q7 7 14 0" fill="none" stroke="#8a5a1c" stroke-width="2" stroke-linecap="round"/>
+          </g>
+          <path class="dr" pathLength="1" style="--d:.9s;--t:1.2s" stroke="#E3A93C" stroke-width="3"
+                d="M58 24v-9M58 76v9M32 50h-9M84 50h9M40 32l-6-6M76 32l6-6M40 68l-6 6M76 68l6 6"/>
+          <!-- cloud -->
+          <path class="pop" style="--d:.8s;transform-origin:320px 56px" fill="#E8F3FA" stroke="#7FB3D5" stroke-width="3" stroke-linejoin="round"
+                d="M285 70c-12 0-13-15 0-17c0-14 19-17 25-6c8-11 27-4 25 11c13 0 15 12 3 12z"/>
 
-        <!-- premium heart: thin-line reveal, then a soft gold-kissed fill and glow -->
-        <path class="heart-fill"
-              style="--d:4.1s"
-              d="M200 185
-                 C168 158 138 132 138 100
-                 C138 76 158 58 182 58
-                 C192 58 200 64 200 76
-                 C200 64 208 58 218 58
-                 C242 58 262 76 262 100
-                 C262 132 232 158 200 185 Z"/>
-        <path class="heart-outline"
-              style="--d:1.6s"
-              d="M200 185
-                 C168 158 138 132 138 100
-                 C138 76 158 58 182 58
-                 C192 58 200 64 200 76
-                 C200 64 208 58 218 58
-                 C242 58 262 76 262 100
-                 C262 132 232 158 200 185 Z"/>
+          <!-- pencil sketch guide, then the crayon heart on top -->
+          <path class="dr" pathLength="1" style="--d:.6s;--t:1.2s;stroke-dasharray:.02 .02" stroke="#9FB7C8" stroke-width="1.5"
+                d="M200 185C168 158 138 132 138 100C138 76 158 58 182 58C192 58 200 64 200 76C200 64 208 58 218 58C242 58 262 76 262 100C262 132 232 158 200 185Z" opacity=".7"/>
+          <g class="beat">
+            <path class="fade" style="--d:3.2s" fill="#FDE3E9" d="M200 185C168 158 138 132 138 100C138 76 158 58 182 58C192 58 200 64 200 76C200 64 208 58 218 58C242 58 262 76 262 100C262 132 232 158 200 185Z"/>
+            <g clip-path="url(#hc)">
+              <path class="dr" pathLength="1" style="--d:3.4s;--t:2.8s" stroke="#E58CA0" stroke-width="9" opacity=".9"
+                    d="M130 66L270 74L130 85L270 94L130 104L270 113L130 123L270 132L130 142L270 151L130 161L255 168L150 177L225 186"/>
+            </g>
+            <path class="dr" pathLength="1" style="--d:1.8s;--t:1.8s" stroke="#D1627F" stroke-width="5"
+                  d="M200 185C168 158 138 132 138 100C138 76 158 58 182 58C192 58 200 64 200 76C200 64 208 58 218 58C242 58 262 76 262 100C262 132 232 158 200 185Z"/>
+            <g transform="rotate(-6 200 125)">
+              <text class="pop" style="--d:5.4s;transform-origin:200px 122px" x="200" y="128" text-anchor="middle" font-size="25" fill="#fff"
+                    font-family="Patrick Hand,Comic Sans MS,cursive">tumi + ami</text>
+            </g>
+          </g>
 
-        <!-- a single soft sheen sweeping across the heart once it's filled -->
-        <rect class="heart-shimmer" style="--d:4.6s" x="-60" y="40" width="50" height="170" clip-path="url(#heartClip)" fill="url(#shimmerGradient)"/>
+          <!-- grass, stems, flowers -->
+          <path class="dr" pathLength="1" style="--d:1s;--t:1.6s" stroke="#6B7A4F" stroke-width="4"
+                d="M6 272q20-12 40 0t40 0t40 0t40 0t40 0t40 0t40 0t40 0t40 0t40 0"/>
+          <g class="dr" style="display:contents">
+            <path class="dr" pathLength="1" style="--d:1.4s" stroke="#6B7A4F" stroke-width="3.5" d="M70 270C66 250 74 236 70 224"/>
+            <path class="dr" pathLength="1" style="--d:1.6s" stroke="#6B7A4F" stroke-width="3.5" d="M140 270C145 258 137 250 140 246"/>
+            <path class="dr" pathLength="1" style="--d:1.8s" stroke="#6B7A4F" stroke-width="3.5" d="M262 270C257 258 265 250 262 246"/>
+            <path class="dr" pathLength="1" style="--d:2s" stroke="#6B7A4F" stroke-width="3.5" d="M330 270C334 250 326 236 330 226"/>
+          </g>
+          <g class="pop" style="--d:2.3s;color:#E58CA0;transform-origin:70px 218px"><use href="#fl" x="70" y="218"/></g>
+          <g class="pop" style="--d:2.5s;color:#8EC1E3;transform-origin:140px 240px"><use href="#fl" x="140" y="240"/></g>
+          <g class="pop" style="--d:2.7s;color:#F2A7B8;transform-origin:262px 240px"><use href="#fl" x="262" y="240"/></g>
+          <g class="pop" style="--d:2.9s;color:#E58CA0;transform-origin:330px 220px"><use href="#fl" x="330" y="220"/></g>
 
-        <!-- a few understated sparkles finishing the reveal -->
-        <path class="sparkle" style="--d:5.0s" d="M95 60 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3 Z"/>
-        <path class="sparkle" style="--d:5.4s" d="M310 130 l2.5 7 7 2.5 -7 2.5 -2.5 7 -2.5 -7 -7 -2.5 7 -2.5 Z"/>
-        <path class="sparkle" style="--d:5.8s" d="M70 150 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2 Z"/>
+          <!-- floating mini hearts -->
+          <g transform="translate(108 120)"><use class="bob" href="#sm" fill="#E58CA0" style="--d:5.6s;transform-box:fill-box;transform-origin:center"/></g>
+          <g transform="translate(298 112) scale(1.2)"><use class="bob" href="#sm" fill="#F2A7B8" style="--d:5.9s;transform-box:fill-box;transform-origin:center"/></g>
+          <g transform="translate(300 170) scale(.8)"><use class="bob" href="#sm" fill="#E58CA0" style="--d:6.2s;transform-box:fill-box;transform-origin:center"/></g>
+
+          <!-- sparkles -->
+          <g transform="translate(96 82) scale(1.1)"><path class="spk" style="--d:5.8s" d="M0-12L3-3L12 0L3 3L0 12L-3 3L-12 0L-3-3Z"/></g>
+          <g transform="translate(240 36)"><path class="spk" style="--d:6.3s" d="M0-12L3-3L12 0L3 3L0 12L-3 3L-12 0L-3-3Z"/></g>
+          <g transform="translate(366 150) scale(.9)"><path class="spk" style="--d:6.8s" d="M0-12L3-3L12 0L3 3L0 12L-3 3L-12 0L-3-3Z"/></g>
+          <g transform="translate(34 160) scale(.8)"><path class="spk" style="--d:7.2s" d="M0-12L3-3L12 0L3 3L0 12L-3 3L-12 0L-3-3Z"/></g>
+        </g>
       </svg>
-
-      <p class="accept" id="acceptText"></p>
+      <div class="accept" id="acceptText"></div>
+      <span class="sign" id="signText">🖍️ nijer haate banaisi, onek kosto kore!</span>
     </div>
   </section>
-
 </main>
 
-<!-- Background music: no visible player/toggle. Starts on the very first tap/click anywhere on the page. -->
 <audio id="bgMusic" src="https://raw.githubusercontent.com/jellyquotex-eng/ki-r-bolbo/main/SaveTik.io_7709777224789970184.mp3" loop preload="auto"></audio>
 
-<!-- ============ ADMIN PANEL — double-press "P" to open, no login ============ -->
+<!-- ADMIN PANEL: double-press "P" -->
 <div id="adminOverlay" aria-label="Admin panel">
   <button id="adminClose" type="button" aria-label="Close admin panel">&times;</button>
   <div id="panel">
     <div class="panel-head">
       <h1>Responses</h1>
-      <div style="display:flex; align-items:center; gap:.8rem;">
+      <div style="display:flex;align-items:center;gap:.8rem;">
         <span class="count" id="countLabel"></span>
         <button id="refreshBtn" type="button">Refresh</button>
       </div>
     </div>
     <p id="statusLine"></p>
     <table>
-      <thead>
-        <tr><th>Name</th><th>Answer</th><th>Device</th><th>No clicks</th><th>Submitted</th></tr>
-      </thead>
+      <thead><tr><th>Name</th><th>Answer</th><th>Device</th><th>No clicks</th><th>Submitted</th></tr></thead>
       <tbody id="rows"></tbody>
     </table>
   </div>
 </div>
 
 <script type="module">
-/* =================================================================
-   FIREBASE SETUP
-   ================================================================= */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getDatabase, ref, push, set, query, orderByChild, get, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getDatabase, ref, push, set, query, orderByChild, get, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCXLAfJldSGWOMGJoPTR4dmm4v2f39XOHs",
@@ -421,102 +328,63 @@ const firebaseConfig = {
   messagingSenderId: "698109897300",
   appId: "1:698109897300:web:1107e64ec41fd3746f1bc1"
 };
+const db = getDatabase(initializeApp(firebaseConfig));
 
-const firebaseApp = initializeApp(firebaseConfig);
-const db = getDatabase(firebaseApp);
+/* ---------- utils ---------- */
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-/* =================================================================
-   UTILITIES
-   ================================================================= */
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-/**
- * Turns the browser's user-agent string into a friendly, approximate
- * device label (e.g. "iPhone", "Android (SM-G991B)", "Windows PC").
- * This only reads standard, always-public browser information — the
- * same thing every website already sees on every request — nothing
- * more precise (no IMEI, no phone number, no location) is available
- * or requested.
- */
-function detectDeviceLabel(userAgent, platform) {
-  const ua = userAgent || "";
+function detectDeviceLabel(ua, platform) {
+  ua = ua || "";
   if (/iPhone/i.test(ua)) return "iPhone";
   if (/iPad/i.test(ua)) return "iPad";
   if (/Android/i.test(ua)) {
-    const modelMatch = ua.match(/Android[^;]*;\s*([^)]+)\)/i);
-    return modelMatch ? `Android (${modelMatch[1].trim()})` : "Android phone";
+    const m = ua.match(/Android[^;]*;\s*([^)]+)\)/i);
+    return m ? `Android (${m[1].trim()})` : "Android phone";
   }
   if (/Macintosh/i.test(ua)) return "Mac";
   if (/Windows/i.test(ua)) return "Windows PC";
   if (/Linux/i.test(ua)) return "Linux";
   return platform || "Unknown device";
 }
+const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 
-/** Escape text before inserting into innerHTML, to avoid markup injection. */
-function escapeHtml(str) {
-  return String(str).replace(/[&<>"']/g, (c) => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-  }[c]));
-}
-
-/**
- * Splits an element's text (or a provided string) into one <span class="ch">
- * per character, each with a staggered reveal delay, used for the
- * blur-to-sharp cinematic text animation.
- */
 function splitIntoChars(el, text, baseDelay = 0, step = 0.045) {
   el.setAttribute("aria-label", text);
   el.innerHTML = "";
-  [...text].forEach((char, i) => {
-    const span = document.createElement("span");
-    span.className = "ch";
-    span.setAttribute("aria-hidden", "true");
-    span.style.setProperty("--d", (baseDelay + i * step).toFixed(3) + "s");
-    span.textContent = char === " " ? "\u00A0" : char;
-    el.appendChild(span);
+  [...text].forEach((c, i) => {
+    const s = document.createElement("span");
+    s.className = "ch"; s.setAttribute("aria-hidden", "true");
+    s.style.setProperty("--d", (baseDelay + i * step).toFixed(3) + "s");
+    s.textContent = c === " " ? "\u00A0" : c;
+    el.appendChild(s);
   });
 }
+document.querySelectorAll("[data-split]").forEach((el) => splitIntoChars(el, el.dataset.split));
 
-/** Splits text into one <span class="ch"> per whole word (for short phrases). */
-function splitIntoWords(el, text, baseDelay = 0, step = 0.35) {
-  el.setAttribute("aria-label", text);
-  el.innerHTML = "";
-  text.split(" ").forEach((word, i) => {
-    const span = document.createElement("span");
-    span.className = "ch";
-    span.style.setProperty("--d", (baseDelay + i * step).toFixed(3) + "s");
-    span.textContent = word;
-    el.appendChild(span);
-  });
+/* AI-chatbot style streaming: char by char, tiny pauses on punctuation */
+async function typeInto(el, text, speed = 36, alive = () => true) {
+  el.textContent = "";
+  for (const c of [...text]) {
+    if (!alive()) return;
+    el.textContent += c;
+    await sleep(speed + Math.random() * 24 + (",.?!…".includes(c) ? 170 : 0));
+  }
 }
 
-/* Pre-render the static proposal question on load. */
-document.querySelectorAll("[data-split]").forEach((el) => {
-  splitIntoChars(el, el.dataset.split, 0, 0.045);
-});
-
-/* =================================================================
-   BACKGROUND MUSIC — starts on the very first click/tap anywhere.
-   No play/pause button, no visible toggle. Browsers block audio
-   from starting on its own, so it waits for that first user gesture.
-   ================================================================= */
+/* ---------- music: starts on first tap ---------- */
 const bgMusic = document.getElementById("bgMusic");
 document.addEventListener("click", () => {
   bgMusic.volume = 0.55;
-  bgMusic.play().catch((err) => console.warn("Background music could not start:", err));
+  bgMusic.play().catch((e) => console.warn("Music could not start:", e));
 }, { once: true });
 
-/* =================================================================
-   SCENE MANAGER
-   ================================================================= */
+/* ---------- scenes ---------- */
 const screens = {
   name: document.getElementById("scr-name"),
-  msg1: document.getElementById("scr-msg1"),
-  msg2: document.getElementById("scr-msg2"),
+  chat: document.getElementById("scr-chat"),
   proposal: document.getElementById("scr-proposal"),
   final: document.getElementById("scr-final")
 };
-
 function enterScene(key) {
   Object.entries(screens).forEach(([k, el]) => {
     el.classList.remove("active");
@@ -525,85 +393,124 @@ function enterScene(key) {
   document.body.dataset.scene = key;
   const el = screens[key];
   el.classList.add("active");
-  // Force a frame so the character-reveal transition restarts from blur.
   requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add("show")));
 }
 
-/* =================================================================
-   SCENE 1 → 2 → 3: NAME + PERSONALISED MESSAGES
-   ================================================================= */
+/* ---------- name -> chatbot lines ---------- */
 let userName = "";
+let started = false;
+
+const chatLines = (n) => [
+  `Hey ${n}... ekta kotha bolbo? 👀`,
+  `${n}, tomare hebby bhalo lage.`,
+  `Keno bhalo lage jano? Cause amar tomare bhalo lage.`,
+  `Ekhon keno bhalo lage ta jano? Cause I love you.`,
+  `Umm... tahole keno bhalobashi jano? Cause I love you. 🙈`,
+  `${n}, tomare onek bhalo lage. (eta fact, no cap)`,
+  `Ekta choto question ache... ready? 🥹`
+];
 
 document.getElementById("nameForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const typed = document.getElementById("nameInput").value.trim();
-  userName = typed || "Baby";
+  if (started) return;
+  started = true;
+  userName = document.getElementById("nameInput").value.trim() || "Baby";
 
-  const msg1El = document.getElementById("msg1Text");
-  const msg2El = document.getElementById("msg2Text");
-  splitIntoChars(msg1El, `${userName}, tomare hebby bhalo lage.`, 0.1, 0.035);
-  splitIntoChars(msg2El, `${userName}, tomare onek bhalo lage.`, 0.1, 0.035);
+  const chat = document.getElementById("chat");
+  const msg = document.getElementById("msg");
+  const txt = document.getElementById("msgText");
 
-  enterScene("msg1");
-  await sleep(4200);
-  enterScene("msg2");
-  await sleep(4200);
+  enterScene("chat");
+  await sleep(1300);
+
+  for (const line of chatLines(userName)) {
+    msg.classList.remove("out");
+    chat.classList.add("think");           // "typing..." dots
+    await sleep(800 + Math.random() * 500);
+    chat.classList.remove("think");
+    await typeInto(txt, line, 38);
+    await sleep(1500);
+    msg.classList.add("out");
+    await sleep(550);
+  }
   enterScene("proposal");
 });
 
-/* =================================================================
-   SCENE 4: THE EVASIVE "NO" / GROWING "YES" GAME
-   ================================================================= */
+/* ---------- the evasive "No" / growing "Yes" ---------- */
 const pleas = [
   "Please, na bolo na.",
   "Amare hurt koro na please.",
   "Amare chere jeo na please.",
   "Please chere jeo na amar... ami to ototao kharap na je tumi na bolteso."
 ];
-
-let stage = 0;
+let stage = 0, pleaToken = 0;
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const pleaText = document.getElementById("pleaText");
-
 const yesScale = [1, 1.14, 1.3, 1.55, 1.85];
-const noScale  = [1, .8, .58, .38, .2];
+const noScale = [1, .8, .58, .38, .2];
 
 function applyStage() {
   yesBtn.style.transform = `scale(${yesScale[Math.min(stage, yesScale.length - 1)]})`;
-  noBtn.style.transform  = `scale(${noScale[Math.min(stage, noScale.length - 1)]})`;
+  noBtn.style.transform = `scale(${noScale[Math.min(stage, noScale.length - 1)]})`;
   noBtn.style.opacity = Math.max(.92 - stage * 0.2, .12);
 }
-
 noBtn.addEventListener("click", () => {
   if (stage < pleas.length) {
-    pleaText.style.opacity = 0;
-    pleaText.style.transform = "translateY(6px)";
-    setTimeout(() => {
-      pleaText.textContent = pleas[stage];
-      pleaText.style.opacity = .88;
-      pleaText.style.transform = "none";
-    }, 220);
+    const my = ++pleaToken;
+    typeInto(pleaText, pleas[stage], 30, () => my === pleaToken);
     stage++;
     applyStage();
   }
   if (stage >= pleas.length) {
-    // "No" is now effectively retired — too small and inert to submit anything.
     noBtn.disabled = true;
     yesBtn.style.transform = `scale(${yesScale[yesScale.length - 1]})`;
   }
 });
 
+/* ---------- final: confetti + chatbot-style lines ---------- */
+function spawnConfetti() {
+  const glyphs = ["♥", "✦", "✿", "★", "♡"];
+  const colors = ["#E58CA0", "#F2A7B8", "#E3B873", "#8EC1E3", "#A9B48A"];
+  for (let i = 0; i < 34; i++) {
+    const s = document.createElement("span");
+    s.className = "conf";
+    s.textContent = glyphs[i % glyphs.length];
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.fontSize = 12 + Math.random() * 18 + "px";
+    s.style.color = colors[i % colors.length];
+    s.style.opacity = .55 + Math.random() * .4;
+    s.style.setProperty("--sw", (Math.random() * 60 - 30) + "px");
+    s.style.animationDuration = 6 + Math.random() * 6 + "s";
+    s.style.animationDelay = 5.6 + Math.random() * 5 + "s";
+    screens.final.appendChild(s);
+  }
+}
+
 yesBtn.addEventListener("click", async () => {
   yesBtn.disabled = true;
   noBtn.disabled = true;
-
   enterScene("final");
-  splitIntoWords(
-    document.getElementById("acceptText"),
-    `Yeeey! ${userName} is my pookie wife now.`,
-    6.2, 0.3
-  );
+  spawnConfetti();
+
+  const box = document.getElementById("acceptText");
+  const finalLines = [
+    [`Yeeey! ${userName} is my pookie wife now. 🎉`, ""],
+    [`Official hoye gelo, no refund, no return 😌`, ""],
+    [`(eita banate amar 100 ta try lagse, kauke bolish na 🤫)`, "small"]
+  ];
+
+  (async () => {
+    await sleep(6200);
+    for (const [line, cls] of finalLines) {
+      const p = document.createElement("p");
+      if (cls) p.className = cls;
+      box.appendChild(p);
+      await typeInto(p, line, 42);
+      await sleep(500);
+    }
+    document.getElementById("signText").classList.add("on");
+  })();
 
   try {
     const entryRef = push(ref(db, "responses"));
@@ -620,86 +527,51 @@ yesBtn.addEventListener("click", async () => {
   }
 });
 
-/* =================================================================
-   ADMIN PANEL — no login, opened by double-pressing "P"
-   ================================================================= */
+/* ---------- admin panel: double-press "P" ---------- */
 const adminOverlay = document.getElementById("adminOverlay");
-const statusLine   = document.getElementById("statusLine");
-const rowsEl       = document.getElementById("rows");
-const countLabel   = document.getElementById("countLabel");
+const statusLine = document.getElementById("statusLine");
+const rowsEl = document.getElementById("rows");
+const countLabel = document.getElementById("countLabel");
 
 let lastPTime = 0;
 document.addEventListener("keydown", (e) => {
   const tag = (document.activeElement && document.activeElement.tagName) || "";
-  if (tag === "INPUT" || tag === "TEXTAREA") return; // don't hijack typing in the name field
+  if (tag === "INPUT" || tag === "TEXTAREA") return;
   if (e.key.toLowerCase() !== "p") return;
-
   const now = Date.now();
-  if (now - lastPTime < 500) {
-    openAdmin();
-    lastPTime = 0;
-  } else {
-    lastPTime = now;
-  }
+  if (now - lastPTime < 500) { openAdmin(); lastPTime = 0; } else { lastPTime = now; }
 });
-
 document.getElementById("adminClose").addEventListener("click", closeAdmin);
 document.getElementById("refreshBtn").addEventListener("click", loadResponses);
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && adminOverlay.classList.contains("open")) closeAdmin();
 });
-
-function openAdmin() {
-  adminOverlay.classList.add("open");
-  loadResponses();
-}
-function closeAdmin() {
-  adminOverlay.classList.remove("open");
-}
-
-function setStatus(kind, message) {
-  // kind: "info" | "error" | "" (hidden)
-  statusLine.className = kind;
-  statusLine.textContent = message || "";
-}
+function openAdmin() { adminOverlay.classList.add("open"); loadResponses(); }
+function closeAdmin() { adminOverlay.classList.remove("open"); }
+function setStatus(kind, message) { statusLine.className = kind; statusLine.textContent = message || ""; }
 
 async function loadResponses() {
   setStatus("info", "Loading responses…");
   rowsEl.innerHTML = "";
   countLabel.textContent = "";
-
   try {
-    const responsesQuery = query(ref(db, "responses"), orderByChild("timestamp"));
-    const snapshot = await get(responsesQuery);
+    const snapshot = await get(query(ref(db, "responses"), orderByChild("timestamp")));
     const data = snapshot.val();
-
-    if (!data) {
-      setStatus("info", "No one has answered yet.");
-      return;
-    }
-
-    const entries = Object.values(data).sort(
-      (a, b) => (b.timestamp || 0) - (a.timestamp || 0)
-    );
-
-    rowsEl.innerHTML = entries.map((entry) => `
+    if (!data) { setStatus("info", "No one has answered yet."); return; }
+    const entries = Object.values(data).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+    rowsEl.innerHTML = entries.map((en) => `
       <tr>
-        <td>${escapeHtml(entry.name ?? "")}</td>
-        <td class="answer-yes">${escapeHtml(entry.answer ?? "")}</td>
-        <td title="${escapeHtml(entry.userAgent ?? "")}">${escapeHtml(entry.device ?? "—")}</td>
-        <td>${entry.noClicks ?? 0}</td>
-        <td>${entry.timestamp ? new Date(entry.timestamp).toLocaleString() : "—"}</td>
-      </tr>
-    `).join("");
-
+        <td>${escapeHtml(en.name ?? "")}</td>
+        <td class="answer-yes">${escapeHtml(en.answer ?? "")}</td>
+        <td title="${escapeHtml(en.userAgent ?? "")}">${escapeHtml(en.device ?? "—")}</td>
+        <td>${en.noClicks ?? 0}</td>
+        <td>${en.timestamp ? new Date(en.timestamp).toLocaleString() : "—"}</td>
+      </tr>`).join("");
     countLabel.textContent = `${entries.length} response${entries.length === 1 ? "" : "s"}`;
     setStatus("", "");
   } catch (err) {
     console.error("Failed to load responses from Firebase:", err);
-    // PERMISSION_DENIED here almost always means the Realtime Database
-    // rules have not been published with ".read": true on "responses".
-    const reason = (err && err.message) ? err.message : "Unknown error";
-    setStatus("error", `Could not load data — ${reason}. Check that your Firebase Realtime Database rules are published (see the rules provided alongside this file).`);
+    setStatus("error", `Could not load data — ${(err && err.message) || "Unknown error"}. Check that your Firebase Realtime Database rules are published.`);
   }
 }
 </script>
