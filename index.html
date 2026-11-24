@@ -41,6 +41,16 @@
     animation:grain 12s steps(6) infinite; }
   @keyframes grain{ 0%{transform:translate(0,0)} 20%{transform:translate(-3%,2%)} 40%{transform:translate(2%,-3%)} 60%{transform:translate(-2%,-1%)} 80%{transform:translate(3%,3%)} 100%{transform:translate(0,0)} }
 
+  /* ---------- self-drawing love doodles ---------- */
+  .dd{ position:fixed; z-index:1; pointer-events:none; width:clamp(54px,15vmin,120px); height:auto; overflow:visible; transition:opacity 1.2s ease; }
+  body[data-scene="final"] .dd{ opacity:0; }
+  .dd path{ fill:none; stroke:var(--c,#EBA9BA); stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round;
+    stroke-dasharray:1; stroke-dashoffset:1; animation:ddraw 8s ease-in-out var(--d,0s) infinite; }
+  @keyframes ddraw{ 0%{ stroke-dashoffset:1; } 35%,70%{ stroke-dashoffset:0; } 100%{ stroke-dashoffset:-1; } }
+  .dd{ animation:ddfloat 7s ease-in-out infinite alternate; }
+  @keyframes ddfloat{ to{ transform:translateY(-12px) rotate(5deg); } }
+  @media (prefers-reduced-motion:reduce){ .dd,.dd path{ animation:none; stroke-dashoffset:0; } }
+
   /* ---------- scenes ---------- */
   .scene{ position:fixed; inset:0; z-index:2; display:grid; place-items:center; padding:5vw;
     opacity:0; visibility:hidden; filter:blur(16px); transform:scale(1.05) translateY(1.5vh);
@@ -183,6 +193,14 @@
 <div class="grain" aria-hidden="true"></div>
 <canvas id="trail" aria-hidden="true"></canvas>
 
+<!-- self-drawing love doodles -->
+<svg class="dd" viewBox="0 0 100 100" style="left:5%;top:7%;--c:#EBA9BA" aria-hidden="true"><path pathLength="1" d="M50 88C20 62 8 44 8 30C8 16 19 8 30 8C40 8 47 14 50 22C53 14 60 8 70 8C81 8 92 16 92 30C92 44 80 62 50 88Z"/></svg>
+<svg class="dd" viewBox="0 0 100 100" style="right:6%;top:9%;--c:#9CC6E3;--d:1.5s" aria-hidden="true"><path pathLength="1" d="M50 82C24 60 14 44 14 32C14 20 23 14 32 14C41 14 47 19 50 26C53 19 59 14 68 14C77 14 86 20 86 32C86 44 76 60 50 82ZM6 92L94 8M94 8L80 10M94 8L92 22M6 92L6 78M6 92L20 92"/></svg>
+<svg class="dd" viewBox="0 0 100 100" style="left:7%;bottom:10%;--c:#B4BF95;--d:3s" aria-hidden="true"><path pathLength="1" d="M8 22H92V78H8ZM8 22L50 54L92 22M8 78L38 48M92 78L62 48M50 36C44 28 40 34 50 42C60 34 56 28 50 36"/></svg>
+<svg class="dd" viewBox="0 0 100 100" style="right:7%;bottom:12%;--c:#EBA9BA;--d:2s" aria-hidden="true"><path pathLength="1" d="M50 6L61 38L94 40L68 60L77 94L50 74L23 94L32 60L6 40L39 38Z"/></svg>
+<svg class="dd" viewBox="0 0 100 100" style="left:2%;top:44%;--c:#9CC6E3;--d:4s" aria-hidden="true"><path pathLength="1" d="M4 70C20 10 48 14 42 44S12 76 34 88S78 60 96 20"/></svg>
+<svg class="dd" viewBox="0 0 100 100" style="right:3%;top:46%;--c:#B4BF95;--d:5s;width:clamp(40px,10vmin,80px)" aria-hidden="true"><path pathLength="1" d="M50 88C20 62 8 44 8 30C8 16 19 8 30 8C40 8 47 14 50 22C53 14 60 8 70 8C81 8 92 16 92 30C92 44 80 62 50 88ZM50 66C34 52 28 42 28 34C28 28 33 24 38 24C44 24 48 28 50 32"/></svg>
+
 <main>
   <section id="scr-name" class="scene active" aria-label="Enter your name">
     <div>
@@ -276,6 +294,17 @@
           <g transform="translate(108 120)"><use class="bob" href="#sm" fill="#EBA9BA" style="--d:5.6s;transform-box:fill-box;transform-origin:center"/></g>
           <g transform="translate(298 112) scale(1.2)"><use class="bob" href="#sm" fill="#9CC6E3" style="--d:5.9s;transform-box:fill-box;transform-origin:center"/></g>
           <g transform="translate(300 170) scale(.8)"><use class="bob" href="#sm" fill="#B4BF95" style="--d:6.2s;transform-box:fill-box;transform-origin:center"/></g>
+          <!-- heart balloons -->
+          <g transform="translate(36 112)">
+            <path class="dr" pathLength="1" style="--d:4s;--t:1.4s" stroke="#B4BF95" stroke-width="3" d="M0 22q-8 16 2 30t-2 40"/>
+            <path class="dr" pathLength="1" style="--d:3.6s;--t:1.2s" stroke="#EBA9BA" stroke-width="3.5" fill="#F6D5DD" d="M0 22C-26 2 -20 -24 0 -12C20 -24 26 2 0 22Z"/>
+          </g>
+          <g transform="translate(366 106)">
+            <path class="dr" pathLength="1" style="--d:4.4s;--t:1.4s" stroke="#B4BF95" stroke-width="3" d="M0 22q8 16 -2 30t2 40"/>
+            <path class="dr" pathLength="1" style="--d:4s;--t:1.2s" stroke="#9CC6E3" stroke-width="3.5" d="M0 22C-26 2 -20 -24 0 -12C20 -24 26 2 0 22Z"/>
+          </g>
+          <!-- love ribbon scribble -->
+          <path class="dr" pathLength="1" style="--d:6s;--t:2.2s" stroke="#EBA9BA" stroke-width="3" d="M96 204c14-14 30 8 44-4s22 10 36-2s24 8 40-2s26 8 40-2s22 10 34-2s22 6 26 0"/>
           <!-- sparkles -->
           <g transform="translate(96 82) scale(1.1)"><path class="spk" style="--d:5.8s" d="M0-12L3-3L12 0L3 3L0 12L-3 3L-12 0L-3-3Z"/></g>
           <g transform="translate(240 36)"><path class="spk" style="--d:6.3s" d="M0-12L3-3L12 0L3 3L0 12L-3 3L-12 0L-3-3Z"/></g>
@@ -400,11 +429,17 @@ function burst(x, y, n = 70) {
 let trail = [], mx = -99, my = -99;
 function addTrail(x, y) { trail.push({ x, y, s: 4 + Math.random() * 6, life: 1, vx: (Math.random() - .5) * .8, vy: .3 + Math.random() * .6, c: COLORS[(Math.random() * 5) | 0] }); }
 addEventListener("pointermove", (e) => { if (Math.hypot(e.clientX - mx, e.clientY - my) > 14) { addTrail(e.clientX, e.clientY); mx = e.clientX; my = e.clientY; } });
-addEventListener("pointerdown", (e) => { for (let i = 0; i < 6; i++) addTrail(e.clientX, e.clientY); });
+addEventListener("pointerdown", (e) => {
+  for (let i = 0; i < 6; i++) addTrail(e.clientX, e.clientY);
+  for (let i = 0; i < 3; i++) bursts.push({ x: e.clientX + (Math.random() - .5) * 20, y: e.clientY, vx: (Math.random() - .5) * 1.4, vy: -2 - Math.random() * 1.5,
+    g: .01, d: .012, s: 8 + Math.random() * 8, r: 0, vr: (Math.random() - .5) * .05, c: i % 2 ? "#EBA9BA" : "#9CC6E3", h: true, life: 1 });
+});
 
-let t = 0;
+let t = 0, rise = false;
 (function loop() {
   t++;
+  if (rise && t % 6 === 0) bursts.push({ x: Math.random() * W, y: H + 12, vx: (Math.random() - .5) * 1.2, vy: -2.2 - Math.random() * 2.5,
+    g: .005, d: .004, s: 7 + Math.random() * 12, r: 0, vr: (Math.random() - .5) * .06, c: COLORS[(Math.random() * 5) | 0], h: Math.random() < .7, life: 1 });
   fctx.clearRect(0, 0, W, H);
   for (const p of drift) {
     p.y += p.vy; p.ph += p.sp; p.r += p.vr; p.x += Math.sin(p.ph * 3) * .35;
@@ -414,7 +449,7 @@ let t = 0;
   }
   bursts = bursts.filter((b) => b.life > 0);
   for (const b of bursts) {
-    b.x += b.vx; b.y += b.vy; b.vy += .18; b.vx *= .985; b.r += b.vr; b.life -= .008;
+    b.x += b.vx; b.y += b.vy; b.vy += (b.g ?? .18); b.vx *= .985; b.r += b.vr; b.life -= (b.d || .008);
     fctx.save(); fctx.translate(b.x, b.y); fctx.rotate(b.r); fctx.globalAlpha = Math.max(b.life, 0); fctx.fillStyle = b.c;
     b.h ? heart(fctx, b.s) : petal(fctx, b.s * .8); fctx.restore();
   }
@@ -526,6 +561,7 @@ function spawnConfetti() {
 
 yesBtn.addEventListener("click", async (e) => {
   yesBtn.disabled = true; noBtn.disabled = true;
+  setTimeout(() => { rise = true; }, 900);
   const r = yesBtn.getBoundingClientRect();
   burst(r.left + r.width / 2, r.top + r.height / 2, 90);
   setTimeout(() => burst(W * .25, H * .6, 40), 350);
