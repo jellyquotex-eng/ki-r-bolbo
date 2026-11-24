@@ -7,7 +7,7 @@
 <title>Pookie Wife?</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
 <style>
   :root{
     --cream:#FBF8F1; --pink:#F6D5DD; --pink-deep:#EBA9BA; --rose:#B9657F;
@@ -40,6 +40,31 @@
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     animation:grain 12s steps(6) infinite; }
   @keyframes grain{ 0%{transform:translate(0,0)} 20%{transform:translate(-3%,2%)} 40%{transform:translate(2%,-3%)} 60%{transform:translate(-2%,-1%)} 80%{transform:translate(3%,3%)} 100%{transform:translate(0,0)} }
+
+  /* ---------- premium polish: glass cards, serif type, 3D tilt, gradient buttons, wax seal ---------- */
+  :root{ --serif:"Cormorant Garamond","Playfair Display",Georgia,"Times New Roman",serif; }
+  body .glass{ position:relative; padding:2.4rem 1.8rem; border-radius:32px; background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(255,255,255,.42));
+    backdrop-filter:blur(22px) saturate(1.25); -webkit-backdrop-filter:blur(22px) saturate(1.25); border:1px solid rgba(255,255,255,.9);
+    box-shadow:0 40px 90px rgba(107,122,79,.16), 0 8px 24px rgba(156,198,227,.2), inset 0 1px 0 #fff, inset 0 0 0 1px rgba(180,191,149,.18);
+    transform:perspective(1000px) rotateX(calc(var(--py,0) * -5deg)) rotateY(calc(var(--px,0) * 6deg)); transition:transform .5s ease-out; }
+  body #scr-name > .glass{ width:min(92vw,540px); }
+  body #scr-proposal > .glass{ width:min(94vw,680px); }
+  body .chat.glass{ width:min(92vw,660px); }
+  body #scr-name .prompt{ font-family:var(--serif); font-style:italic; font-weight:600; font-size:clamp(1.9rem,6vw,3.2rem); letter-spacing:.01em; }
+  body .msg{ font-family:var(--serif); font-weight:500; font-size:clamp(1.6rem,5vw,2.7rem); line-height:1.4; color:var(--olive-deep); }
+  body #scr-proposal .question{ font-family:var(--serif); font-style:italic; font-weight:600; font-size:clamp(2.1rem,7.2vw,3.9rem); line-height:1.15; }
+  body .btn, body #yesBtn{ background:linear-gradient(135deg,#7F9060,#5A6A3E); letter-spacing:.04em; }
+  body #noBtn{ background:linear-gradient(135deg,#B7D8EE,#8DBBDC); }
+  body .who{ font-family:var(--serif); font-size:.95rem; letter-spacing:.14em; text-transform:uppercase; }
+  .sign{ left:1rem; right:auto; }
+  .seal{ position:absolute; right:-22px; bottom:-30px; width:112px; height:112px; z-index:4; opacity:0; pointer-events:none; filter:drop-shadow(0 8px 14px rgba(79,91,56,.3)); }
+  .seal.on{ animation:stamp .75s cubic-bezier(.2,.9,.3,1.15) forwards; }
+  .seal.on::before{ content:""; position:absolute; inset:0; border-radius:50%; border:3px solid var(--blue-deep); opacity:0; animation:shock 1.1s ease-out .5s forwards; }
+  @keyframes stamp{ 0%{ opacity:0; transform:scale(3.4) rotate(-40deg); } 55%{ opacity:1; transform:scale(.9) rotate(-10deg); } 78%{ transform:scale(1.06) rotate(-15deg); } 100%{ opacity:1; transform:scale(1) rotate(-14deg); } }
+  @keyframes shock{ 0%{ opacity:.9; transform:scale(1); } 100%{ opacity:0; transform:scale(3.2); } }
+  .seal .ring{ transform-origin:60px 60px; animation:spin 26s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @media (max-width:520px){ body .glass{ padding:1.8rem 1.1rem; border-radius:26px; } }
 
   /* ---------- extra magic: cursor glow, heartbeat vignette, parallax, question hearts ---------- */
   #glow{ position:fixed; left:0; top:0; width:300px; height:300px; z-index:1; pointer-events:none; border-radius:50%; will-change:transform;
@@ -220,7 +245,7 @@
 
 <main>
   <section id="scr-name" class="scene active" aria-label="Enter your name">
-    <div>
+    <div class="glass">
       <p class="prompt shine">Hey baby, what's your name?</p>
       <form id="nameForm" autocomplete="off">
         <input id="nameInput" type="text" placeholder="Tomar naam likho..." autocomplete="off" required maxlength="40">
@@ -230,7 +255,7 @@
   </section>
 
   <section id="scr-chat" class="scene" aria-label="Messages">
-    <div class="chat" id="chat">
+    <div class="chat glass" id="chat">
       <div class="who"><b></b>pookie bot</div>
       <div class="slot">
         <p class="msg" id="msg"><span id="msgText"></span><i class="cur"></i></p>
@@ -240,7 +265,7 @@
   </section>
 
   <section id="scr-proposal" class="scene" aria-label="The proposal">
-    <div style="position:relative">
+    <div class="glass">
       <div class="q-glow"></div>
       <div class="steps" id="steps" aria-hidden="true"></div>
       <p class="question shine" data-split="Will you be my wife?"></p>
@@ -331,6 +356,14 @@
         </g>
       </svg>
       <div class="accept" id="acceptText"></div>
+      <div class="seal" id="seal" aria-hidden="true"><svg viewBox="0 0 120 120">
+        <defs><path id="ringp" d="M60 60m-44 0a44 44 0 1 1 88 0a44 44 0 1 1-88 0"/></defs>
+        <circle cx="60" cy="60" r="58" fill="#FBF8F1" stroke="#6B7A4F" stroke-width="3"/>
+        <circle cx="60" cy="60" r="54" fill="none" stroke="#6B7A4F" stroke-width="1" stroke-dasharray="2 3"/>
+        <circle cx="60" cy="60" r="31" fill="#F6D5DD" stroke="#6B7A4F" stroke-width="2"/>
+        <g class="ring"><text font-size="11" font-weight="600" fill="#4F5B38" font-family="Cormorant Garamond,Georgia,serif"><textPath href="#ringp" textLength="268" lengthAdjust="spacing">OFFICIALLY MINE ✦ FOREVER ✦ </textPath></text></g>
+        <path d="M60 75C46 64 42 57 42 51C42 45 47 42 52 42C56 42 59 44 60 48C61 44 64 42 68 42C73 42 78 45 78 51C78 57 74 64 60 75Z" fill="#EBA9BA" stroke="#6B7A4F" stroke-width="2"/>
+      </svg></div>
       <span class="sign" id="signText">🖍️ nijer haate banaisi, onek kosto kore!</span>
     </div>
   </section>
@@ -444,6 +477,17 @@ function burst(x, y, n = 70) {
       c: COLORS[(Math.random() * 5) | 0], h: Math.random() < .55, life: 1 });
   }
 }
+function firework(x, y) {
+  for (let i = 0; i < 40; i++) { const a = i / 40 * 6.283, v = 3.5 + Math.random() * 2.8;
+    bursts.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, g: .05, d: .011, s: 2 + Math.random() * 2.2, r: 0, vr: 0, c: COLORS[(Math.random() * 5) | 0], dot: true, life: 1 }); }
+  for (let i = 0; i < 10; i++) { const a = i / 10 * 6.283;
+    bursts.push({ x, y, vx: Math.cos(a) * 2.2, vy: Math.sin(a) * 2.2, g: .04, d: .01, s: 7, r: 0, vr: .03, c: "#EBA9BA", h: true, life: 1 }); }
+}
+function grandFinale() {
+  const go = () => firework(W * (.12 + Math.random() * .76), H * (.1 + Math.random() * .4));
+  [0, 350, 700, 1100, 1500].forEach((d) => setTimeout(go, d));
+  setInterval(go, 2600);
+}
 let trail = [], mx = -99, my = -99;
 function addTrail(x, y) { trail.push({ x, y, s: 4 + Math.random() * 6, life: 1, vx: (Math.random() - .5) * .8, vy: .3 + Math.random() * .6, c: COLORS[(Math.random() * 5) | 0] }); }
 addEventListener("pointermove", (e) => { if (Math.hypot(e.clientX - mx, e.clientY - my) > 14) { addTrail(e.clientX, e.clientY); mx = e.clientX; my = e.clientY; } });
@@ -483,7 +527,7 @@ addEventListener("pointermove", (e) => { tx = e.clientX; ty = e.clientY; const s
   for (const b of bursts) {
     b.x += b.vx; b.y += b.vy; b.vy += (b.g ?? .18); b.vx *= .985; b.r += b.vr; b.life -= (b.d || .008);
     fctx.save(); fctx.translate(b.x, b.y); fctx.rotate(b.r); fctx.globalAlpha = Math.max(b.life, 0); fctx.fillStyle = b.c;
-    b.h ? heart(fctx, b.s) : petal(fctx, b.s * .8); fctx.restore();
+    if (b.dot) { fctx.beginPath(); fctx.arc(0, 0, b.s, 0, 6.28); fctx.fill(); } else if (b.h) heart(fctx, b.s); else petal(fctx, b.s * .8); fctx.restore();
   }
   tctx.clearRect(0, 0, W, H);
   trail = trail.filter((p) => p.life > 0);
@@ -519,7 +563,7 @@ let userName = "", started = false;
 const chatLines = (n) => [
   `Hey ${n}... ekta kotha bolbo? 👀`,
   `Ami google e search korsi "how to impress ${n}", kono result pai nai, tai nijei ashlam 😭`,
-  `${n}, tomare hebby bhalo lage.`,
+  `${n}, amar tomake onek bhalo lage.`,
   `Keno bhalo lage jano? Cause amar tomare bhalo lage.`,
   `Ekhon keno bhalo lage ta jano? Cause I love you.`,
   `Umm... tahole keno bhalobashi jano? Cause I love you. 🙈`,
@@ -641,6 +685,9 @@ yesBtn.addEventListener("click", async (e) => {
       await sleep(500);
     }
     document.getElementById("signText").classList.add("on");
+    await sleep(700);
+    document.getElementById("seal").classList.add("on");
+    setTimeout(() => { burst(W / 2, H / 2, 50); grandFinale(); }, 650);
   })();
 
   try {
